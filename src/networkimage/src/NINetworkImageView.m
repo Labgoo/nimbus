@@ -45,6 +45,7 @@
 @synthesize interpolationQuality = _interpolationQuality;
 @synthesize imageMemoryCache = _imageMemoryCache;
 @synthesize networkOperationQueue = _networkOperationQueue;
+@synthesize operationQueuePriority = _operationQueuePriority;
 @synthesize maxAge = _maxAge;
 @synthesize initialImage = _initialImage;
 @synthesize delegate = _delegate;
@@ -75,6 +76,7 @@
     self.sizeForDisplay = YES;
     self.scaleOptions = NINetworkImageViewScaleToFitLeavesExcessAndScaleToFillCropsExcess;
     self.interpolationQuality = kCGInterpolationDefault;
+    self.operationQueuePriority = NSOperationQueuePriorityNormal;
 
     self.imageMemoryCache = [Nimbus imageMemoryCache];
     self.networkOperationQueue = [Nimbus networkOperationQueue];
@@ -420,6 +422,8 @@
             // We handle image scaling ourselves in the image processing method, so we need to disable
             // AFNetworking from doing so as well.
             operation.imageScale = 1;
+
+            operation.queuePriority = self.operationQueuePriority;
 
             [self.operations setObject:operation forKey:pathToNetworkImage];
 
